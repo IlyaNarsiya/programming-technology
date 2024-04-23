@@ -16,4 +16,4 @@ while IFS= read -r -d '' file; do
     done
     cp "$file" "$destination"
 done < <(find "$input_dir" -type f -print0)
-echo "All files have been copied to $output_dir"
+echo "Finished."

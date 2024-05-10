@@ -1,0 +1,8 @@
+@Test
+void testWithNegativesAndZero() {
+    List<Integer> numbers = Arrays.asList(-1, 0, 3, 2);
+    assertEquals(-1, NumberProcessor._min(numbers));
+    assertEquals(3, NumberProcessor._max(numbers));
+    assertEquals(4, NumberProcessor._sum(numbers));
+    assertEquals(0, NumberProcessor._mult(numbers));
+}

@@ -1,0 +1,26 @@
+import org.junit.*;
+import static org.junit.Assert.*;
+import java.util.Arrays;
+public class NumberProcessorTest {
+    private List<Integer> testList;
+    @Before
+    public void setUp() {
+        testList = Arrays.asList(1, 4, 2, 3);
+    }
+    @Test
+    public void testMin() {
+        assertEquals(1, NumberProcessor._min(testList));
+    }
+    @Test
+    public void testMax() {
+        assertEquals(4, NumberProcessor._max(testList));
+    }
+    @Test
+    public void testSum() {
+        assertEquals(10, NumberProcessor._sum(testList));
+    }
+    @Test
+    public void testMult() {
+        assertEquals(24, NumberProcessor._mult(testList));
+    }
+}

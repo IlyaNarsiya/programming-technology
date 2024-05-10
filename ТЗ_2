@@ -1,0 +1,46 @@
+//функции чтения из файла, поиска минимального числа, поиска максимального числа, сложения и умножения всех чисел из файла
+import java.io.*;
+import java.util.*;
+public class Main {
+    public static List<Integer> Numbers(String filePath) throws IOException {
+        File file = new File(filePath);
+        Scanner in = new Scanner(file);
+        List<Integer> numbers = new ArrayList<>();
+        while (in.hasNextInt()) {
+            numbers.add(in.nextInt());
+        }
+        in.close();
+        return numbers;
+    }
+    public static int _min(List<Integer> numbers) {
+        return Collections.min(numbers);
+    }
+    public static int _max(List<Integer> numbers) {
+        return Collections.max(numbers);
+    }
+    public static long _sum(List<Integer> numbers) {
+        long sum = 0;
+        for (int number : numbers) {
+            sum += number;
+        }
+        return sum;
+    }
+    public static long _mult(List<Integer> numbers) {
+        long product = 1;
+        for (int number : numbers) {
+            product *= number;
+        }
+        return product;
+    }
+    public static void main(String[] args) {
+        try {
+            List<Integer> numbers = Numbers("numbers.txt");
+            System.out.println("Минимальное число: " + _min(numbers));
+            System.out.println("Максимальное число: " + _max(numbers));
+            System.out.println("Сумма чисел: " + _sum(numbers));
+            System.out.println("Произведение чисел: " + _mult(numbers));
+        } catch (IOException e) {
+            System.out.println("Ошибка чтения файла: " + e.getMessage());
+        }
+    }
+}

@@ -1,10 +1,20 @@
-import matplotlib.pyplot as plt
-import pandas as pd
-data = pd.read_csv('performance_data.csv')
-plt.figure(figsize=(10, 5))
-plt.plot(data['NumberOfElements'], data['Time'], marker='o')
-plt.title('Зависимость времени выполнения от количества элементов')
-plt.xlabel('Количество элементов')
-plt.ylabel('Время выполнения (мс)')
-plt.grid(True)
-plt.show()
+int[] sizes = {1000, 10000, 100000, 500000, 1000000};
+long[] times = new long[sizes.length];
+for (int i = 0; i < sizes.length; i++) {
+    List<Integer> numbers = new ArrayList<>(Collections.nCopies(sizes[i], 1));
+    long start = System.nanoTime();
+    NumberProcessor._sum(numbers);
+    long end = System.nanoTime();
+    times[i] = end - start;
+    System.out.println("Time for " + sizes[i] + " numbers: " + times[i] + " ns");
+}
+//Эти данные можно экспортировать и использовать для построения графика в Python(например)
+//import matplotlib.pyplot as plt
+//sizes = [1000, 10000, 100000, 500000, 1000000]
+//times = [...] 
+//plt.plot(sizes, times, marker='o')
+//plt.xlabel('Number of elements')
+//plt.ylabel('Time (ns)')
+//plt.title('Time Complexity of _sum function')
+//plt.grid(True)
+//plt.show()

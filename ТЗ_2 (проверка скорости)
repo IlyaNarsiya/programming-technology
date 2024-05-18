@@ -1,26 +1,41 @@
-@Test
-void testPerformance() {
-    List<Integer> largeNumbers = Arrays.asList(new Integer[1000000]);
-    Arrays.fill(largeNumbers, 1);
-    long start, end;
+    @Test
+    void testPerformanceForDifferentFileSizes() {
+        testPerformanceForFile("numbers_10.txt");
+        testPerformanceForFile("numbers_100.txt");
+        testPerformanceForFile("numbers_1000.txt");
+        testPerformanceForFile("numbers_10000.txt");
+        testPerformanceForFile("numbers_100000.txt");
+    }
+    void testPerformanceForFile(String fileName) {
+        try {
+            System.out.println("Testing performance for " + fileName + ":");
+            List<Integer> numbers = Functions.Numbers(fileName);
 
-    start = System.nanoTime();
-    NumberProcessor._min(largeNumbers);
-    end = System.nanoTime();
-    System.out.println("Min function took: " + (end - start) + " ns");
+            long start, end;
 
-    start = System.nanoTime();
-    NumberProcessor._max(largeNumbers);
-    end = System.nanoTime();
-    System.out.println("Max function took: " + (end - start) + " ns");
+            start = System.nanoTime();
+            Functions._min(numbers);
+            end = System.nanoTime();
+            System.out.println("Min function took: " + (end - start) + " ns");
 
-    start = System.nanoTime();
-    NumberProcessor._sum(largeNumbers);
-    end = System.nanoTime();
-    System.out.println("Sum function took: " + (end - start) + " ns");
+            start = System.nanoTime();
+            Functions._max(numbers);
+            end = System.nanoTime();
+            System.out.println("Max function took: " + (end - start) + " ns");
 
-    start = System.nanoTime();
-    NumberProcessor._mult(largeNumbers);
-    end = System.nanoTime();
-    System.out.println("Mult function took: " + (end - start) + " ns");
+            start = System.nanoTime();
+            Functions._sum(numbers);
+            end = System.nanoTime();
+            System.out.println("Sum function took: " + (end - start) + " ns");
+
+            start = System.nanoTime();
+            Functions._mult(numbers);
+            end = System.nanoTime();
+            System.out.println("Mult function took: " + (end - start) + " ns");
+
+            System.out.println();
+        } catch (IOException e) {
+            fail("Error reading file: " + e.getMessage());
+        }
+    }
 }

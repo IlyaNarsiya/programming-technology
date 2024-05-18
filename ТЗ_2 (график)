@@ -1,20 +1,80 @@
-int[] sizes = {1000, 10000, 100000, 500000, 1000000};
-long[] times = new long[sizes.length];
-for (int i = 0; i < sizes.length; i++) {
-    List<Integer> numbers = new ArrayList<>(Collections.nCopies(sizes[i], 1));
-    long start = System.nanoTime();
-    NumberProcessor._sum(numbers);
-    long end = System.nanoTime();
-    times[i] = end - start;
-    System.out.println("Time for " + sizes[i] + " numbers: " + times[i] + " ns");
+public class Graphic extends JPanel {
+
+    public Graphic() {
+        JFreeChart chart = createChart(createDataset());
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new Dimension(800, 600));
+        add(chartPanel);
+    }
+    private XYSeriesCollection createDataset() {
+        XYSeriesCollection dataset = new XYSeriesCollection();
+
+        try {
+            XYSeries seriesMin = new XYSeries("Min");
+            XYSeries seriesMax = new XYSeries("Max");
+            XYSeries seriesSum = new XYSeries("Sum");
+            XYSeries seriesMult = new XYSeries("Mult");
+
+            for (int i = 1; i <= 5; i++) {
+                List<Integer> numbers = Functions.Numbers("numbers_" + (10^i) + ".txt");
+
+                long startTime = System.nanoTime();
+                Functions._min(numbers);
+                long endTime = System.nanoTime();
+                seriesMin.add(i * 10, endTime - startTime);
+
+                startTime = System.nanoTime();
+                Functions._max(numbers);
+                endTime = System.nanoTime();
+                seriesMax.add(i * 10, endTime - startTime);
+
+                startTime = System.nanoTime();
+                Functions._sum(numbers);
+                endTime = System.nanoTime();
+                seriesSum.add(i * 10, endTime - startTime);
+
+                startTime = System.nanoTime();
+                Functions._mult(numbers);
+                endTime = System.nanoTime();
+                seriesMult.add(i * 10, endTime - startTime);
+            }
+
+            dataset.addSeries(seriesMin);
+            dataset.addSeries(seriesMax);
+            dataset.addSeries(seriesSum);
+            dataset.addSeries(seriesMult);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return dataset;
+    }
+
+    private JFreeChart createChart(XYSeriesCollection dataset) {
+        return ChartFactory.createXYLineChart(
+                "Performance vs. Number of Elements",
+                "Number of Elements",
+                "Time (ns)",
+                dataset);
+    }
+
+    public void main(String[] args, ChartUtils ChartUtilities) {
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Performance Graph");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.add(new Graphic());
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+
+            try {
+                File file = new File(System.getProperty("user.home") + File.separator + "Documents" + File.separator + "chart.png");
+                ChartUtilities.saveChartAsPNG(file, createChart(createDataset()), 800, 600);
+                System.out.println("График сохранен в файл: " + file.getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
 }
-//Эти данные можно экспортировать и использовать для построения графика в Python(например)
-//import matplotlib.pyplot as plt
-//sizes = [1000, 10000, 100000, 500000, 1000000]
-//times = [...] 
-//plt.plot(sizes, times, marker='o')
-//plt.xlabel('Number of elements')
-//plt.ylabel('Time (ns)')
-//plt.title('Time Complexity of _sum function')
-//plt.grid(True)
-//plt.show()
